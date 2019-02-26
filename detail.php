@@ -2,6 +2,12 @@
 require "config/config.php";
 include_once "function/base_url.php";
 include_once "function/rupiah.php";
+
+$id = $_GET['id'];
+
+$query_produk = "SELECT * FROM products WHERE id_produk = '$id'";
+$sql_produk = mysqli_query($koneksi, $query_produk) or die(mysqli_error($koneksi));
+$produk = mysqli_fetch_assoc($sql_produk);
 ?>
 
 <!doctype html>
@@ -11,7 +17,7 @@ include_once "function/rupiah.php";
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="toko online">
   <meta name="author" content="fajar siagian">
-  <title>Toko · Bootstrap</title>
+  <title>Detail Toko · Bootstrap</title>
 
 
   <!-- Bootstrap core CSS -->
@@ -55,41 +61,42 @@ include_once "function/rupiah.php";
     </div>
   </nav>
 
-  <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light">
-    <div class="col-md-5 p-lg-5 mx-auto my-5">
-      <h1 class="display-4 font-weight-normal">Punny headline</h1>
-      <p class="lead font-weight-normal">And an even wittier subheading to boot. Jumpstart your marketing efforts with this example based on Apple’s marketing pages.</p>
-      <a class="btn btn-outline-secondary" href="#">Coming soon</a>
-    </div>
-    <div class="product-device shadow-sm d-none d-md-block"></div>
-    <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
-  </div>
-
   <div class="container">
-    <div class="row">
-      <?php  
-      $query_produk = "SELECT * FROM products";
-      $sql_produk = mysqli_query($koneksi, $query_produk) or die(mysqli_error($koneksi));
-      while($produk = mysqli_fetch_assoc($sql_produk)):
-      ?>
-      <div class="col-md-3 mt-4">
-        <div class="card">
-          <img src="<?=base_url("img/".$produk['img']);?>" class="card-img-top gambar">
-          <div class="card-body">
-            <h5 class="card-title text-capitalize"><?=$produk['nm_products'];?></h5>
-            <h6 class="card-subtitle mb-2 text-danger"><?=rupiah($produk['harga']);?></h6>
-            <a href="beli.php?id=<?=$produk['id_produk'];?>" class="btn btn-outline-primary btn-sm">Beli</a>
-            <a href="detail.php?id=<?=$produk['id_produk'];?>" class="btn btn-outline-info btn-sm">Detail</a>
-          </div>
-        </div>
+    <div class="row mt-4 mb-4">
+      <div class="col-md-6">
+        <img src="img/<?=$produk['img'];?>" class="img-fluid">
       </div>
-      <?php  
-      endwhile;
-      ?>
+      <div class="col-md-6">
+        <h2><?=$produk['nm_products'];?></h2>
+        <h5><?=rupiah($produk['harga']);?></h5>
+        <p>
+          <?=$produk['deskripsi'];?>
+        </p>
+        <form method="post">
+          <div class="form-group">
+            <div class="input-group">
+              <input type="number" name="jumlah" min="1" class="form-control">
+              <div class="input-group-append">
+                <button class="btn btn-primary" name="beli">Beli</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        
+        <?php  
+        if(isset($_POST['beli'])){
+          $jumlah = $_POST['jumlah'];
+          $_SESSION['keranjang'][$id] = $jumlah;
 
-  
-  </div>
-</div><!-- container end -->
+           echo"<script>alert('prduk telah di tambahkan');</script>";
+           echo"<script>location='keranjang.php';</script>";
+        }
+        ?>
+
+
+      </div>
+    </div>
+  </div><!-- container end -->
 
 
 <footer class="container py-5">
