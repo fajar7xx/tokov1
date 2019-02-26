@@ -27,6 +27,6 @@ if(!$koneksi){
 // echo 'sukses book';
 
 // kumpulan function letakkan disini
-include_once "../function/rupiah.php";
-include_once "../function/base_url.php";
+// include "function/rupiah.php";
+// include "function/base_url.php";
 ?>

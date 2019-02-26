@@ -1,6 +1,17 @@
 <?php  
 require_once "../config/config.php";
+include_once "../function/base_url.php";
+include_once "../function/rupiah.php";
+
 $admin = $_SESSION['admin']['nama_lengkap'];
+
+
+// secury untuk amdin
+if(!isset($_SESSION['admin'])){
+  echo "<script>alert('Akses Mencurigakan')</script>";
+  header('location:login.php');
+  exit();
+}
 
 ?>
 

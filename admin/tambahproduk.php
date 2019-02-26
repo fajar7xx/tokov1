@@ -48,7 +48,11 @@
 </div>
 
 <?php
-r
+require '../libs/vendor/autoload.php';
+
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+
 
 // upload form
 if(isset($_POST['simpan'])){
@@ -70,7 +74,7 @@ if(isset($_POST['simpan'])){
 	echo '<div class="alert alert-secondary" role="alert">
 			data tersimpan
 		</div>
-		<meta http-equiv="refresh" content="1;url=index.php?page=product">';
+		<meta http-equiv="refresh" content="1;url=index.php?page=products">';
 
 }
 ?>
